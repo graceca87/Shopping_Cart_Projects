@@ -28,6 +28,8 @@ def create_new_item():  #create a function
     item_price = input(f"\nWhat is the price of one {item_name}? $") #asking for a price and giving that a variable (item_price)
     item_price = float(item_price)                               #since we don't want a string, we will assume the price is a float and will turn the input into a float.
     new_item["price"] += item_price
+    # if item_price.isnumeric() != True:
+    #     print("Please type a number. For example 2 instead of 'two'")
 
     item_quantity = input(f"\nHow many {item_name}'s do you want? ")   #asking another question
     item_quantity = int(item_quantity)                               #input is always going to output a string. Since I'm looking for an integer i need to tell the comp to turn item_quantity into an integer here.
@@ -78,7 +80,7 @@ def remove_item(list_of_items):
     for item in list_of_items:
         if item_to_remove.lower() == item['name'].lower():
             item['quantity'] -= quantity_to_remove
-    print("\nThank you! {quantity_to_remove} {items_to_remove}(s) removed from cart")
+    print(f"\nThank you! {quantity_to_remove} {item_to_remove}(s) removed from cart")
     return(list_of_items)
 
 while True:
@@ -106,7 +108,9 @@ while True:
         print(f"\nYour total is ${calculate_total(shopping_cart):.2f}")
 
         break
-
+    
+    if what_to_do != "add item" "remove item" "show cart" "quit":
+        print("\nSorry, that's not a valid response. Please choose from the following options: ")
 
 
 
