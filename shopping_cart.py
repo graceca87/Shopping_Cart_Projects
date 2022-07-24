@@ -11,19 +11,6 @@ from IPython.display import clear_output
 # 6) Upon quiting the program, prints out a receipt of the items with total and quantity. 
 
 
-# what would you like to add?
-# What is the price of ____?
-# how many {items} would you like to add?
-# print( {number} of {items} have been added to your card.
-    # This means I need to create am empty dictionary with parameters for name of item, price, and quantity
-# what would you like to do? add/remove/show/clear/quit
-
-
-# your current cart:
-# -> there are no items in your cart.
-# total: $0.00
-# Thank you for shopping with us!
-
 shopping_cart = []
 
 def create_new_item():  #create a function 
@@ -35,33 +22,45 @@ def create_new_item():  #create a function
     }
     new_item = item                                                                ## I'm creating a variable for the item that I'm about to add (new_item). Since new_item = item, new_item will have all the attributes that I've already set for item.                                
 
-    
-    item_name = input("What type of item would you like to add? ")          #python predefined funtion (input) will retrieve the information I'm looking for (name)      
+    item_name = input("\nWhat type of item would you like to add? ")          #python predefined funtion (input) will retrieve the information I'm looking for (name)      
     new_item["name"] = item_name                 #I'm telling the computer what to do with the information received in item_name. It needs to go into a dictionary. It should be a key within my (item) dictionary that is now called new_item.
 
-    item_price = input(f"What is the price of one {item_name}? ") #asking for a price and giving that a variable (item_price)
+    item_price = input(f"\nWhat is the price of one {item_name}? $") #asking for a price and giving that a variable (item_price)
     item_price = float(item_price)                               #since we don't want a string, we will assume the price is a float and will turn the input into a float.
     new_item["price"] += item_price
 
-    item_quantity = input(f"How many {item_name}'s do you want? ")   #asking another question
+    item_quantity = input(f"\nHow many {item_name}'s do you want? ")   #asking another question
     item_quantity = int(item_quantity)                               #input is always going to output a string. Since I'm looking for an integer i need to tell the comp to turn item_quantity into an integer here.
-    new_item["quantity"] += item_quantity                           #Two things happening here. I'm telling the comp where to put the information we've just received (item_quantity). Just like name it needs to go into our new_item dictionary as a value that is associated with a key we're calling "quantity". The 2nd thing we're doing here is the +=.  We do this because we might need to add more later.  
-
+    new_item["quantity"] += item_quantity
+    
+    clear_output()
+                              
+    added_message = (f"\nThank you! {item_quantity} {item_name}(s) have been added to your cart.")
+    print(added_message)
     return new_item
 
 def show_cart(list_of_items):
-    print("Here are the items in your cart: ")
     for item in list_of_items:
         plural = ""
         if item["quantity"] > 1:
             plural = "s"
+        subtotal = calculate_subtotal(item)
+        message = f"\n{item['quantity']} {item['name']}{plural} - ${item['price']:.2f} each"
+        print(message)
         
-        message = f"{item['quantity']} {item['name']}{plural} : ${item['price']:.2f}"
+def cart_breakdown(list_of_items):
+    for item in list_of_items:
+        plural = ""
+        if item["quantity"] > 1:
+            plural = "s"
+        subtotal = calculate_subtotal(item)
+        message = f"\n{item['quantity']} {item['name']}{plural} - ${subtotal:.2f}"
         print(message)
 
 def calculate_subtotal(item):
     subtotal = item['quantity'] * item['price']
     return subtotal
+    
 
 def calculate_total(list_of_items):
     total = 0
@@ -71,32 +70,69 @@ def calculate_total(list_of_items):
     return total
 
 
-
 def remove_item(list_of_items):
 
-    item_to_remove = input("Which item would you like to remove? ")
-    quantity_to_remove = input(f"How many {item_to_remove}'s do you want to remove? ")
+    item_to_remove = input("\nWhich item would you like to remove? ")
+    quantity_to_remove = input(f"\nHow many {item_to_remove}'s do you want to remove? ")
     quantity_to_remove = int(quantity_to_remove)
     for item in list_of_items:
         if item_to_remove.lower() == item['name'].lower():
             item['quantity'] -= quantity_to_remove
+    print("\nThank you! {quantity_to_remove} {items_to_remove}(s) removed from cart")
+    return(list_of_items)
+
+while True:
+    what_to_do = input("\nWhat would you like to do? (add item, remove item, show cart, or quit): ") 
+    # new_item = create_new_item()
+    # shopping_cart.append(new_item)
+
+    if what_to_do == "add item".lower():
+        new_item = create_new_item()
+        shopping_cart.append(new_item)
+
+
+    if what_to_do == "remove item".lower():
+        remove_item(shopping_cart)
+        calculate_subtotal(new_item)
+
+    if what_to_do == "show cart".lower():
+        print("\nHere are the items in your cart: ")
+        show_cart(shopping_cart)
+        print(f"\nCurrent total: ${calculate_total(shopping_cart):.2f}")
+
+    if what_to_do == "quit".lower():
+        print("\nThanks for shopping with us!")
+        cart_breakdown(shopping_cart)
+        print(f"\nYour total is ${calculate_total(shopping_cart):.2f}")
+
+        break
+
+
+
+
+
+
+
+    # show_cart(shopping_cart)
+    # if add_more == "n":
+    #     break
+
+    # if add_more == "Y".lower():
+    #     new_item = create_new_item()
+    #     shopping_cart.append(new_item)
+    #     add_more = input("Would you like to add another item? Y/n " )
+    # else:
+    #     what_to_do
+    # if what_to_do == "show receipt".lower():
+    #     print("Here is your cart breakdown: " )    
+    #     print(shopping_cart)    #<-----here I just want to print the values.
+    #     # break                 # <------ #why can't I break here??
+
+    # if what_to_do == "quit".lower():
+    #     print("Thanks for shopping! Here is your receipt: " )    
+    #     print(shopping_cart)                                  # <---- Upon quiting the program, prints out a receipt of the items with total and quantity. 
+    #                                                                     #I need it to print in a different format. How do I get this to print out in a block format like a real receipt?
     
-    return(list_of_items)    
-
-
-
-   
-    
-
-    
-    #python predefined funtion (input) will retrieve the information I'm looking for (name)      
-    # new_item["name"] == remove_item                                       #telling python to look at the "name" key in the new_item dictionary
-    
-    # item_quantity = input(f"How many {'item_name'}'s do you want to remove? ")   #asking another question
-    # item_quantity = int(item_quantity)                               #input is always going to output a string. Since I'm looking for an integer i need to tell the comp to turn item_quantity into an integer here.
-    # new_item["quantity"] -= item_quantity                           #Two things happening here. I'm telling the comp where to put the information we've just received (item_quantity). Just like name it needs to go into our new_item dictionary as a value that is associated with a key we're calling "quantity". The 2nd thing we're doing here is the +=.  We do this because we might need to add more later.  
-
-
     # if what_to_do == "show receipt":
     #     # create_new_item()
     #     # shopping_cart.append(new_item)
@@ -105,35 +141,13 @@ def remove_item(list_of_items):
     #     print(item_values[0])
     #     what_to_do
     #     # break    #why can't I break here??
-
-while True:
-    what_to_do = input("What would you like to do? (add item, remove item, show receipt, or quit): ") 
-    new_item = create_new_item()
-    shopping_cart.append(new_item)
-    show_cart(shopping_cart)
-    if add_more == "n":
-        break
-
-    # if add_more == "Y".lower():
-    #     new_item = create_new_item()
-    #     shopping_cart.append(new_item)
-    #     add_more = input("Would you like to add another item? Y/n " )
-    # else:
-    #     what_to_do
-    if what_to_do == "show receipt".lower():
-        print("Here is your cart breakdown: " )    
-        print(shopping_cart)    #<-----here I just want to print the values.
-        # break                 # <------ #why can't I break here??
-
-    # if what_to_do == "quit".lower():
-    #     print("Thanks for shopping! Here is your receipt: " )    
-    #     print(shopping_cart)                                  # <---- Upon quiting the program, prints out a receipt of the items with total and quantity. 
-    #                                                                     #I need it to print in a different format. How do I get this to print out in a block format like a real receipt?
-  
     
-
+# : ${item['price']:.2f
         
-
+# your current cart:
+# -> there are no items in your cart.
+# total: $0.00
+# Thank you for shopping with us!
 
 
 #function isn't adding up my new_items. How do I get it to add and print out a total? 
