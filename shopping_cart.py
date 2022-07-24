@@ -46,7 +46,6 @@ def show_cart(list_of_items):
         plural = ""
         if item["quantity"] > 1:
             plural = "s"
-        subtotal = calculate_subtotal(item)
         message = f"\n{item['quantity']} {item['name']}{plural} - ${item['price']:.2f} each"
         print(message)
         
@@ -78,84 +77,47 @@ def remove_item(list_of_items):
     quantity_to_remove = input(f"\nHow many {item_to_remove}'s do you want to remove? ")
     quantity_to_remove = int(quantity_to_remove)
     for item in list_of_items:
-        if item_to_remove.lower() == item['name'].lower():
+        if item_to_remove.lower() <= item['name'].lower():
             item['quantity'] -= quantity_to_remove
-    print(f"\nThank you! {quantity_to_remove} {item_to_remove}(s) removed from cart")
+            print(f"\nThank you! {quantity_to_remove} {item_to_remove}(s) removed from cart")
+
     return(list_of_items)
 
+       
+# def prevent_negatives(list_of_items):
+#     for item in list_of_items:
+#         subtotal = item['quantity'] * item['price']
+#         if subtotal < 1:
+#             subtotal = 0
+#     return subtotal
+
+
 while True:
-    what_to_do = input("\nWhat would you like to do? (add item, remove item, show cart, or quit): ") 
-    # new_item = create_new_item()
-    # shopping_cart.append(new_item)
+    what_to_do = input("\nWhat would you like to do? (add item, remove item, show cart, or quit): ")
 
     if what_to_do == "add item".lower():
         new_item = create_new_item()
         shopping_cart.append(new_item)
 
-
-    if what_to_do == "remove item".lower():
+    elif what_to_do == "remove item".lower():
         remove_item(shopping_cart)
         calculate_subtotal(new_item)
 
-    if what_to_do == "show cart".lower():
+    elif what_to_do == "show cart".lower():
         print("\nHere are the items in your cart: ")
         show_cart(shopping_cart)
+        # prevent_negatives(shopping_cart)
         print(f"\nCurrent total: ${calculate_total(shopping_cart):.2f}")
 
-    if what_to_do == "quit".lower():
+    elif what_to_do == "quit".lower():
         print("\nThanks for shopping with us!")
         cart_breakdown(shopping_cart)
         print(f"\nYour total is ${calculate_total(shopping_cart):.2f}")
 
         break
     
-    if what_to_do != "add item" "remove item" "show cart" "quit":
-        print("\nSorry, that's not a valid response. Please choose from the following options: ")
-
-
-
-
-
-
-    # show_cart(shopping_cart)
-    # if add_more == "n":
-    #     break
-
-    # if add_more == "Y".lower():
-    #     new_item = create_new_item()
-    #     shopping_cart.append(new_item)
-    #     add_more = input("Would you like to add another item? Y/n " )
-    # else:
-    #     what_to_do
-    # if what_to_do == "show receipt".lower():
-    #     print("Here is your cart breakdown: " )    
-    #     print(shopping_cart)    #<-----here I just want to print the values.
-    #     # break                 # <------ #why can't I break here??
-
-    # if what_to_do == "quit".lower():
-    #     print("Thanks for shopping! Here is your receipt: " )    
-    #     print(shopping_cart)                                  # <---- Upon quiting the program, prints out a receipt of the items with total and quantity. 
-    #                                                                     #I need it to print in a different format. How do I get this to print out in a block format like a real receipt?
-    
-    # if what_to_do == "show receipt":
-    #     # create_new_item()
-    #     # shopping_cart.append(new_item)
-    #     shopping_cart.append(new_item)
-    #     print("Thanks for shopping! Here is your receipt: " )    
-    #     print(item_values[0])
-    #     what_to_do
-    #     # break    #why can't I break here??
-    
-# : ${item['price']:.2f
-        
-# your current cart:
-# -> there are no items in your cart.
-# total: $0.00
-# Thank you for shopping with us!
-
-
-#function isn't adding up my new_items. How do I get it to add and print out a total? 
-#Did you tell comp that it needs to add them? Yes. Okay, did you tell comp to print the total after adding? No
-
+    else:
+        print("\nSorry! that's not a valid response. Please choose from the following options: ")
+  
 
     
