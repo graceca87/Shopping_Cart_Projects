@@ -77,9 +77,9 @@ def remove_item(list_of_items):
     quantity_to_remove = input(f"\nHow many {item_to_remove}'s do you want to remove? ")
     quantity_to_remove = int(quantity_to_remove)
     for item in list_of_items:
-        if item_to_remove.lower() <= item['name'].lower():
+        if item_to_remove.lower() == item['name'].lower():
             item['quantity'] -= quantity_to_remove
-            print(f"\nThank you! {quantity_to_remove} {item_to_remove}(s) removed from cart")
+    print(f"\nThank you! {quantity_to_remove} {item_to_remove}(s) removed from cart")
 
     return(list_of_items)
 
